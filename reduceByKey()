@@ -1,0 +1,315 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "362d8fe7",
+   "metadata": {
+    "_cell_guid": "b1076dfc-b9ad-4769-8c92-a6c4dae69d19",
+    "_uuid": "8f2839f25d086af736a60e9eeb907d3b93b6e0e5",
+    "execution": {
+     "iopub.execute_input": "2025-05-29T10:32:20.573857Z",
+     "iopub.status.busy": "2025-05-29T10:32:20.573465Z",
+     "iopub.status.idle": "2025-05-29T10:32:28.911187Z",
+     "shell.execute_reply": "2025-05-29T10:32:28.909891Z"
+    },
+    "papermill": {
+     "duration": 8.343562,
+     "end_time": "2025-05-29T10:32:28.913083",
+     "exception": false,
+     "start_time": "2025-05-29T10:32:20.569521",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "Setting default log level to \"WARN\".\n",
+      "To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).\n",
+      "25/05/29 10:32:26 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable\n"
+     ]
+    }
+   ],
+   "source": [
+    "from pyspark.sql import SparkSession\n",
+    "spark = SparkSession.builder.appName('RDD Operation').getOrCreate()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "b24b4d04",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-05-29T10:32:28.919705Z",
+     "iopub.status.busy": "2025-05-29T10:32:28.919170Z",
+     "iopub.status.idle": "2025-05-29T10:32:28.925449Z",
+     "shell.execute_reply": "2025-05-29T10:32:28.924386Z"
+    },
+    "papermill": {
+     "duration": 0.011011,
+     "end_time": "2025-05-29T10:32:28.926937",
+     "exception": false,
+     "start_time": "2025-05-29T10:32:28.915926",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "data = [\n",
+    "    (0, 'Customer_0', 'Pune', 'Maharashtra', 'India', '2023-06-29', False),\n",
+    "    (1, 'Customer_1', 'Bangalore', 'Tamil Nadu', 'India', '2023-12-07', True),\n",
+    "    (2, 'Customer_2', 'Hyderabad', 'Gujarat', 'India', '2023-10-27', True),\n",
+    "    (3, 'Customer_3', 'Bangalore', 'Karnataka', 'India', '2023-10-17', False),\n",
+    "    (4, 'Customer_4', 'Ahmedabad', 'Karnataka', 'India', '2023-03-14', False),\n",
+    "    (5, 'Customer_5', 'Hyderabad', 'Karnataka', 'India', '2023-07-28', False)\n",
+    "]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "b735624e",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-05-29T10:32:28.932557Z",
+     "iopub.status.busy": "2025-05-29T10:32:28.932251Z",
+     "iopub.status.idle": "2025-05-29T10:32:29.364175Z",
+     "shell.execute_reply": "2025-05-29T10:32:29.363079Z"
+    },
+    "papermill": {
+     "duration": 0.437047,
+     "end_time": "2025-05-29T10:32:29.366294",
+     "exception": false,
+     "start_time": "2025-05-29T10:32:28.929247",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "rdd = spark.sparkContext.parallelize(data)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "id": "0b408b02",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-05-29T10:32:29.375135Z",
+     "iopub.status.busy": "2025-05-29T10:32:29.374698Z",
+     "iopub.status.idle": "2025-05-29T10:32:29.393128Z",
+     "shell.execute_reply": "2025-05-29T10:32:29.392388Z"
+    },
+    "papermill": {
+     "duration": 0.024572,
+     "end_time": "2025-05-29T10:32:29.394729",
+     "exception": false,
+     "start_time": "2025-05-29T10:32:29.370157",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "4"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "rdd.getNumPartitions()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "id": "1327a017",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-05-29T10:32:29.400355Z",
+     "iopub.status.busy": "2025-05-29T10:32:29.400051Z",
+     "iopub.status.idle": "2025-05-29T10:32:30.182916Z",
+     "shell.execute_reply": "2025-05-29T10:32:30.181960Z"
+    },
+    "papermill": {
+     "duration": 0.78801,
+     "end_time": "2025-05-29T10:32:30.185113",
+     "exception": false,
+     "start_time": "2025-05-29T10:32:29.397103",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "[(0, 'Customer_0', 'Pune', 'Maharashtra', 'India', '2023-06-29', False),\n",
+       " (1, 'Customer_1', 'Bangalore', 'Tamil Nadu', 'India', '2023-12-07', True),\n",
+       " (2, 'Customer_2', 'Hyderabad', 'Gujarat', 'India', '2023-10-27', True),\n",
+       " (3, 'Customer_3', 'Bangalore', 'Karnataka', 'India', '2023-10-17', False),\n",
+       " (4, 'Customer_4', 'Ahmedabad', 'Karnataka', 'India', '2023-03-14', False),\n",
+       " (5, 'Customer_5', 'Hyderabad', 'Karnataka', 'India', '2023-07-28', False)]"
+      ]
+     },
+     "execution_count": 5,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "rdd.collect()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "id": "0c61aef2",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-05-29T10:32:30.195437Z",
+     "iopub.status.busy": "2025-05-29T10:32:30.194295Z",
+     "iopub.status.idle": "2025-05-29T10:32:32.677002Z",
+     "shell.execute_reply": "2025-05-29T10:32:32.676111Z"
+    },
+    "papermill": {
+     "duration": 2.48977,
+     "end_time": "2025-05-29T10:32:32.678879",
+     "exception": false,
+     "start_time": "2025-05-29T10:32:30.189109",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "                                                                                                    \r"
+     ]
+    },
+    {
+     "data": {
+      "text/plain": [
+       "[('Pune', 1), ('Hyderabad', 2), ('Ahmedabad', 1), ('Bangalore', 2)]"
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "cityCount = rdd.map(lambda row : (row[2], 1)).reduceByKey(lambda x, y : x+y)\n",
+    "cityCount.collect()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "id": "cc8fea78",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-05-29T10:32:32.689191Z",
+     "iopub.status.busy": "2025-05-29T10:32:32.688242Z",
+     "iopub.status.idle": "2025-05-29T10:32:33.004088Z",
+     "shell.execute_reply": "2025-05-29T10:32:33.003039Z"
+    },
+    "papermill": {
+     "duration": 0.322645,
+     "end_time": "2025-05-29T10:32:33.005746",
+     "exception": false,
+     "start_time": "2025-05-29T10:32:32.683101",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "4"
+      ]
+     },
+     "execution_count": 7,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "cityCount.count()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "4fae34ab",
+   "metadata": {
+    "papermill": {
+     "duration": 0.002292,
+     "end_time": "2025-05-29T10:32:33.010909",
+     "exception": false,
+     "start_time": "2025-05-29T10:32:33.008617",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kaggle": {
+   "accelerator": "none",
+   "dataSources": [],
+   "dockerImageVersionId": 31040,
+   "isGpuEnabled": false,
+   "isInternetEnabled": false,
+   "language": "python",
+   "sourceType": "notebook"
+  },
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.11.11"
+  },
+  "papermill": {
+   "default_parameters": {},
+   "duration": 20.118614,
+   "end_time": "2025-05-29T10:32:35.632579",
+   "environment_variables": {},
+   "exception": null,
+   "input_path": "__notebook__.ipynb",
+   "output_path": "__notebook__.ipynb",
+   "parameters": {},
+   "start_time": "2025-05-29T10:32:15.513965",
+   "version": "2.6.0"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
